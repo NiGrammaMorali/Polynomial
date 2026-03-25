@@ -1,5 +1,7 @@
 #include "unordered_map.h"
+#include "ordered_map.h"
 #include "ordered_map_list.h"
+#include "hash_map2.h"
 
 int main(void) {
 	ForwardList<int> ListTest;
@@ -50,15 +52,15 @@ int main(void) {
 		Poly3.Print();
 		cout << '\n';
 		cout << Poly3.CalculateInPoint(1, 1, 2) << '\n';
-		OrderedMapList<int> a;
+		HashMap2<int> a;
 		cout << "\n\n";
 		cout << "\n\n";
 		Poly1 = Poly2;
-		a.AddElement(Poly1);
 		a.AddElement(Poly3);
+		a.AddElement(Poly1);
 		a.AddElement(Poly2);
 		a.Print();
-		OrderedMapList<int> b(a);
+		HashMap2<int> b(a);
 		cout << "\n\n";
 		a.DeleteElement(24);
 		a.Print();

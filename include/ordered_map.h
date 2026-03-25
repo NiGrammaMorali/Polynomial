@@ -6,22 +6,8 @@
 template<typename T>
 class OrderedMap {
 private:
+	int current;
 	vector<pair<int, Polynomial<T>>> table;
-	int Hash(const Polynomial<T>& poly, size_t num) {
-		int tmp = 0;
-		for (size_t i = 0; i < poly.GetSize(); i++) {
-			Monomial<T> mon = poly[i];
-			string deg = mon.GetDegree();
-			for (auto x : deg) {
-				tmp += (x - 48) * (i + 1);
-			}
-			tmp *= mon.GetCoefficient();
-		}
-		tmp = abs(tmp);
-		tmp = num * (tmp + num);
-		tmp = tmp % 100;
-		return tmp;
-	}
 	size_t BiggestPolySize() {
 		size_t k = 0;
 		for (size_t i = 0; i < table.size(); i++) {
@@ -80,29 +66,29 @@ public:
 		return true;
 	}
 	void AddElement(const Polynomial<T>& poly) {
-		size_t j = 1;
-		bool Ready;
-		for (j; j < 4; j++) {
-			Ready = true;
-			int hash = Hash(poly, j);
-			for (size_t i = 0; i < table.size(); i++) {
-				if (table[i].first == hash) {
-					Ready = false;
-					break;
-				}
-			}
-			if (Ready) {
-				std::pair<int, Polynomial<T>> tmp(hash, poly);
-				table.push_back(tmp);
-				Sort();
-				return;
-			}
+		if (current == table.size()) {
+			std::pair<int, Polynomial<T>> tmp(current, poly);
+			table.push_back(tmp);
+			Sort();
+			current++;
 		}
-		throw std::logic_error("New hash can't be generated");
+		else if (current > table.size()) {
+			current = table.size();
+			std::pair<int, Polynomial<T>> tmp(current, poly);
+			table.push_back(tmp);
+			Sort();
+			current++;
+		}
+		else {
+			std::pair<int, Polynomial<T>> tmp(current, poly);
+			table.push_back(tmp);
+			Sort();
+			current = table.size();
+		}
 	}
 	Polynomial<T> FindElement(int tag) {
-		if (tag > 99 || tag < 0) {
-			throw std::invalid_argument("The argument must be from 0 to 99");
+		if (tag < 0) {
+			throw std::invalid_argument("The argument must be non-negative");
 		}
 		for (size_t i = 0; i < table.size(); i++) {
 			if (table[i].first == tag) {
@@ -116,7 +102,7 @@ public:
 			throw std::logic_error("The table is empty");
 		}
 		if (tag > 99 || tag < 0) {
-			throw std::invalid_argument("The argument must be from 0 to 99");
+			throw std::invalid_argument("The argument must be non-negative");
 		}
 		for (size_t i = 0; i < table.size(); i++) {
 			if (table[i].first == tag) {

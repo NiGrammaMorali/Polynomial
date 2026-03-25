@@ -221,10 +221,10 @@ public:
 		List.Print();
 	}
 	void Print() {
-		if (NullPoly == true) {
-			cout << "0";
-			return;
-		}
+		//if (NullPoly == true) {
+		//	cout << "0";
+		//	return;
+		//}
 		size_t SIZE = List.size();
 		Monomial<T> tmp = List[0];
 		string deg = tmp.GetDegree();
