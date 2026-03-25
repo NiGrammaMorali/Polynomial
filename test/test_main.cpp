@@ -1,8 +1,8 @@
-//#include <gtest.h>
-#include <list.h>
+#include <gtest.h>
+#include "list.h"
 
 int main(int argc, char** argv)
 {
-	//::testing::InitGoogleTest(&argc, argv);
-	//return RUN_ALL_TESTS();
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }

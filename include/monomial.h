@@ -23,14 +23,17 @@ public:
 	bool operator!=(const Monomial& mon) {
 		return !(*this == mon);
 	}
-	bool DegreeCheck(const string& deg) {
+	bool DegreeCheck(const std::string& deg) const {
 		return (this->degree == deg);
 	}
 	bool NullCoef() const {
 		return(this->coefficient == 0);
 	}
-	string& GetDegree() {
+	std::string& GetDegree() {
 		return degree;
+	}
+	T& GetCoefficient() {
+		return coefficient;
 	}
 	Monomial operator+(const Monomial& mon) {
 		if (!(DegreeCheck(mon.degree))) {
@@ -75,7 +78,7 @@ public:
 	void Print() {
 		cout << coefficient << ' ' << degree << '\n';
 	}
-	friend ostream& operator<<(ostream& ostr, const Monomial& mon) {
+	friend std::ostream& operator<<(std::ostream& ostr, const Monomial& mon) {
 		ostr << mon.coefficient << ' ' << mon.degree;
 		return ostr;
 	}

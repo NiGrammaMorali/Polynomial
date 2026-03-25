@@ -12,7 +12,7 @@ set(CUSTOM "${NAME}")
 set(TESTS   "test_${NAME}")
 set(INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-include_directories("${INCLUDE}")
+include_directories("${INCLUDE}" gtest)
 
 add_subdirectory(include)
 #add_subdirectory(src)

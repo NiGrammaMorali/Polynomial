@@ -1,5 +1,5 @@
 #pragma once
-#include  <iostream>
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -26,13 +26,18 @@ private:
 		}
 		return ind;
 	}
+	const Node* ToPos(size_t position) const {
+		if (position >= Size) {
+			throw out_of_range("The index is out of range");
+		}
+		Node* ind = First;
+		for (size_t i = 0; i < position; i++) {
+			ind = ind->next;
+		}
+		return ind;
+	}
 public:
 	ForwardList() : First(nullptr), Size(0) {}
-	ForwardList(const vector<T>& V) {
-		for (size_t i = V.size(); i > 0; i--) {
-			PushFront(v[i - 1]);
-		}
-	}
 	ForwardList(const ForwardList& L) : First(L.First), Size(L.Size) {
 		if (L.First == nullptr) return;
 		Node* New = First = new Node{ *L.First };
@@ -71,14 +76,27 @@ public:
 		First = node;
 		Size++;
 	}
-	void PopFront() noexcept {
-		if (IsEmpty()) {
+	void PopFront() {
+		if (this->IsEmpty()) {
+			throw out_of_range("The list is empty");
 			return;
 		}
 		Node* pointer = First;
 		First = First->next;
 		delete pointer;
 		Size--;
+	}
+	const T& At(size_t position) const {
+		const Node* pointer = ToPos(position);
+		return pointer->data;
+	}
+	T& At(size_t position) {
+		Node* pointer = ToPos(position);
+		return pointer->data;
+	}
+	const T& operator[](size_t position) const {
+		const Node* pointer = ToPos(position);
+		return pointer->data;
 	}
 	T& operator[](size_t position) {
 		Node* pointer = ToPos(position);
@@ -94,6 +112,9 @@ public:
 		if (IsEmpty()) {
 			throw out_of_range("The list is empty");
 		}
+		if (position >= Size - 1) {
+			throw out_of_range("There's no value after that position");
+		}
 		if (Size > 1) {
 			Node* pointer = ToPos(position);
 			Node* toDelete = pointer->next;
@@ -107,6 +128,20 @@ public:
 	}
 	bool IsEmpty() const noexcept {
 		return (Size == 0);
+	}
+	bool operator==(const ForwardList& L) const {
+		if (this->size() != L.size()) {
+			return false;
+		}
+		for (size_t i = 0; i < size(); i++) {
+			if (At(i) != L[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+	bool operator!=(const ForwardList& L) const {
+		return !(*this == L);
 	}
 	void Print() {
 		if (IsEmpty()) {
@@ -127,22 +162,36 @@ public:
 	}
 	void Sort() {
 		Node* tmp1;
+		Node* tmp_gen;
+		size_t pos = 0;
 		for (size_t i = 0; i < Size - 1; i++) {
 			tmp1 = ToPos(i);
-			for (size_t j = i + 1; j < Size; j++) {
+			tmp_gen = tmp1;
+			for (size_t j = i; j < Size; j++) {
 				Node* tmp2 = ToPos(j);
-				if (tmp1->data > tmp2->data) {
-					PushAfter(i, tmp2->data);
-					PushAfter(j + 1, tmp1->data);
-					EraseAfter(j);
-					if (i == 0) {
-						PopFront();
-					}
-					else {
-						EraseAfter(i - 1);
-					}
+				if (tmp_gen->data > tmp2->data) {
+					tmp_gen = tmp2;
+					pos = j;
+				}
+			}
+			if (tmp1->data > tmp_gen->data) {
+				PushAfter(i, tmp_gen->data);
+				PushAfter(pos + 1, tmp1->data);
+				EraseAfter(pos);
+				if (i == 0) {
+					PopFront();
+				}
+				else {
+					EraseAfter(i - 1);
 				}
 			}
 		}
+	}
+	void Clear() {
+		size_t size = this->size();
+		for (size_t i = size - 1; i > 0; i--) {
+			EraseAfter(i - 1);
+		}
+		PopFront();
 	}
 };
