@@ -2,8 +2,12 @@
 #include "ordered_map.h"
 #include "ordered_map_list.h"
 #include "hash_map2.h"
+#include "AVL-Tree.h"
+#include <Windows.h>
 
 int main(void) {
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 	ForwardList<int> ListTest;
 	ListTest.Print();
 	Monomial<int> Monom1(3, "320");
@@ -67,6 +71,24 @@ int main(void) {
 		cout << (a == b) << '\n';
 		a.Clear();
 		a.Print();
+
+		AVLTree<int, std::string> tree;
+
+		tree.insert(10, "ten");
+		cout << tree.find(10) << '\n';
+		tree.insert(25, "twenty five");
+		tree.insert(20, "twenty");
+		tree.insert(7, "seven");
+		tree.insert(5, "five");
+		tree.insert(6, "six");
+		tree.insert(15, "fifteen");
+		tree.printHorizontal();
+		tree.printDetailed();
+		tree.remove(20);
+		tree.printHorizontal();
+		tree.remove(7);
+		tree.printHorizontal();
+		cout << tree.find(15) << '\n';
 	}
 	catch (const out_of_range& mes) {
 		cerr << mes.what() << '\n';
