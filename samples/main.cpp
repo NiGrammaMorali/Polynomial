@@ -4,10 +4,13 @@
 #include "hash_map2.h"
 #include "AVL-Tree.h"
 #include <Windows.h>
+#include <ctime>
+#include "skiplist.h"
 
 int main(void) {
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
+	srand(time(NULL));
 	ForwardList<int> ListTest;
 	ListTest.Print();
 	Monomial<int> Monom1(3, "320");
@@ -89,6 +92,16 @@ int main(void) {
 		tree.remove(7);
 		tree.printHorizontal();
 		cout << tree.find(15) << '\n';
+
+		SkipList<int> sList(6);
+		for (size_t i = 0; i < 100; i++) {
+			sList.insertElement(i);
+		}
+		sList.print();
+		cout << sList.searchElement(3) << '\n';
+		sList.deleteElement(3);
+		sList.print();
+		cout << sList.searchElement(3) << '\n';
 	}
 	catch (const out_of_range& mes) {
 		cerr << mes.what() << '\n';
