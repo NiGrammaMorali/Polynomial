@@ -1,5 +1,4 @@
 #pragma once
-#include <cmath>
 #include <vector>
 
 template<typename T>
